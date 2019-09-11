@@ -1,0 +1,94 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct PETS no;
+
+struct PETS
+{
+    char name[20];
+    char type[20];
+    char sex;
+    int age;
+    char obs[30];
+    int id;
+    struct PETS *prox;
+};
+
+
+void insert (no **inicio);
+void name_search (no *inicio);
+
+
+
+int main ()
+{
+    no *inicio=NULL;
+    int choice=0;
+    while(choice!=11)
+    {
+    printf("Escolha o que deseja fazer:\n\n 1- Adicionar novo registro \n 2- Remover Registro \n 3- Alterar Registro \n 4- Busca por Nome \n 5- Busca por Espécie \n 6- Busca por Espécie e Raça \n 7- Busca por Espécie, Raça e Sexo \n 8- Quantidade de Registros \n 9- Quantidade Específica por Espécie \n 10- Listagem de Cadastros \n 11- Sair \n");
+    scanf("%d" &choice);
+    printf("\n\n");
+    switch(choice)
+    {
+        case 1:
+        insert(&inicio);
+        break;
+
+        case 4:
+        name_search(inicio);
+        break;
+    }
+    }
+}
+
+void insert (no **inicio)
+
+{
+    no *aux;
+        aux=(no*)malloc(sizeof(no));
+        if(aux==NULL)
+        {
+            printf("Heap overflow \n");
+        }
+        fflush(stdin);
+        printf("Nome: ");
+        gets(aux->name);
+        printf("Espécie: ");
+        gets(aux->type);
+        printf("Sexo: ");
+        scanf("%c" &aux->sex);
+        printf("Idade: ");
+        scanf("%d" &aux->age);
+        printf("Observação: ");
+        gets(aux->obs);
+        aux->id=id++
+        aux->prox=(no*)(*inicio);
+}
+
+void name_search (no *inicio)
+
+{
+    char search[20];
+    printf("Nome a ser buscado: ");
+    gets(search);
+
+    while(inicio!=NULL)
+    {
+       if(strcmp(inicio->name,search)==0)
+       {
+           printf("%s \n", inicio->name);
+           printf("%s \n", inicio->type);
+           printf("%c \n", inicio->sex);
+           printf("%d \n", inicio->age);
+           printf("%s \n", inicio->obs);
+       }
+       else
+       {
+           printf(" \n Registro não encontrado! \n");
+       }
+       inicio=inicio->prox;
+    }
+}
