@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +28,7 @@ int main ()
     while(choice!=11)
     {
     printf("Escolha o que deseja fazer:\n\n 1- Adicionar novo registro \n 2- Remover Registro \n 3- Alterar Registro \n 4- Busca por Nome \n 5- Busca por Espécie \n 6- Busca por Espécie e Raça \n 7- Busca por Espécie, Raça e Sexo \n 8- Quantidade de Registros \n 9- Quantidade Específica por Espécie \n 10- Listagem de Cadastros \n 11- Sair \n");
-    scanf("%d" &choice);
+    scanf("%d", &choice);
     printf("\n\n");
     switch(choice)
     {
@@ -45,27 +44,25 @@ int main ()
 }
 
 void insert (no **inicio)
-
 {
     no *aux;
-        aux=(no*)malloc(sizeof(no));
-        if(aux==NULL)
-        {
-            printf("Heap overflow \n");
-        }
-        fflush(stdin);
-        printf("Nome: ");
-        gets(aux->name);
-        printf("Espécie: ");
-        gets(aux->type);
-        printf("Sexo: ");
-        scanf("%c" &aux->sex);
-        printf("Idade: ");
-        scanf("%d" &aux->age);
-        printf("Observação: ");
-        gets(aux->obs);
-        aux->id=id++
-        aux->prox=(no*)(*inicio);
+    aux=(no*)malloc(sizeof(no));
+    if(aux==NULL) {
+        printf("Heap overflow \n");
+    }
+    fflush(stdin);
+    printf("Nome: ");
+    gets(aux->name);
+    printf("Espécie: ");
+    gets(aux->type);
+    printf("Sexo: ");
+    scanf("%c", &aux->sex);
+    printf("Idade: ");
+    scanf("%d", &aux->age);
+    printf("Observação: ");
+    gets(aux->obs);
+    aux->id=aux->id++;
+    aux->prox=(no*)(*inicio);
 }
 
 void name_search (no *inicio)
