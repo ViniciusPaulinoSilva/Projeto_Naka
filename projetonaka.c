@@ -6,18 +6,20 @@ typedef struct PETS no;
 
 struct PETS
 {
+    int id;
     char name[20];
     char type[20];
     char species[20];
     char sex;
     int age;
     char obs[30];
+    short int adotado;
     struct PETS *prox;
-};
+} *inicio = NULL, *aux = NULL;
 
-
-void insert (no **inicio);//Insere novo registro
-void name_search (no *inicio); // Busca por nome
+void insert (int id);
+void removeNode (no **inicio);
+void name_search (int maximo); // Busca por nome
 void type_search (no *inicio); // Busca por raça
 void TS_search (no *inicio); // Busca por raça e especie
 void TSS_search (no *inico); // Busca por raça. especie e sexo
@@ -29,111 +31,143 @@ void list(no *inicio);// Listar os registros
 
 int main ()
 {
-
     no *inicio=NULL;
     int choice=0;
     int count=0; // contador de animais, colocar pra reduzir contador quanto fizer a função 2
     while(choice!=11)
     {
-    printf("Escolha o que deseja fazer:\n\n 1- Adicionar novo registro \n 2- Remover Registro \n 3- Alterar Registro \n 4- Busca por Nome \n 5- Busca por Espécie \n 6- Busca por Espécie e Raça \n 7- Busca por Espécie, Raça e Sexo \n 8- Quantidade de Registros \n 9- Quantidade Específica por Espécie \n 10- Listagem de Cadastros \n 11- Sair \n");
-    printf("\n\n");
-    scanf("%d", &choice);
-    printf("\n\n");
-    switch(choice)
-    {
-        case 1:
-        insert(&inicio);
-        count++;
-        break;
+        system("cls");
+        printf("Escolha o que deseja fazer:\n\n 1- Adicionar novo registro \n 2- Remover Registro \n 3- Alterar Registro \n 4- Busca por Nome \n 5- Busca por Espécie \n 6- Busca por Espécie e Raça \n 7- Busca por Espécie, Raça e Sexo \n 8- Quantidade de Registros \n 9- Quantidade Específica por Espécie \n 10- Listagem de Cadastros \n 11- Sair \n");
+        printf("\n\n");
+        scanf("%d", &choice);
+        printf("\n\n");
+        switch(choice)
+        {
+            case 1:
+                count++;
+                insert(count);
+                break;
 
-        case 4:
-        name_search(inicio);
-        break;
+            case 2:
+                removeNode(&inicio);
+                count--;
+                break;
 
-        case 5:
-        type_search(inicio);
-        break;
+            case 4:
+            name_search(count);
+            break;
 
-        case 6:
-        TS_search(inicio);
-        break;
+            case 5:
+            type_search(inicio);
+            break;
 
-        case 7:
-        TSS_search(inicio);
-        break;
+            case 6:
+            TS_search(inicio);
+            break;
 
-        case 8:
-        counti(count);
-        break;
+            case 7:
+            TSS_search(inicio);
+            break;
 
-        case 9:
-        T_counti(inicio);
-        break;
+            case 8:
+            counti(count);
+            break;
 
-        case 10:
-        list(inicio);
-        break;
+            case 9:
+            T_counti(inicio);
+            break;
 
-    }
+            case 10:
+            list(inicio);
+            break;
+
+        }
     }
 }
 
-void insert (no **inicio)
-{
-    no *aux;
-    aux=(no*)malloc(sizeof(no));
-    if(aux==NULL) {
-        printf("Heap overflow \n");
-    }
+void insert (int id) {
+    //create a link
+    no *pNovo = (no*) malloc(sizeof(no));
+
+    pNovo->id = id;
     fflush(stdin);
     printf("Nome: ");
-    gets(aux->name);
+    gets(pNovo->name);
     printf("Espécie: ");
-    gets(aux->type);
+    gets(pNovo->type);
     printf("Raça: ");
-    gets(aux->species);
-    printf("Sexo: ");
-    scanf("%c", &aux->sex);
+    gets(pNovo->species);
+    printf("Sexo (M ou F): ");
+    scanf("%c", &pNovo->sex);
     printf("Idade: ");
-    scanf("%d", &aux->age);
+    scanf("%d", &pNovo->age);
     fflush(stdin);
     printf("Observação: ");
-    gets(aux->obs);
+    gets(pNovo->obs);
     printf("\n\n");
-    aux->prox=(no*)(*inicio);
+	
+   //point it to old first node
+   pNovo->prox = inicio;
+	
+   //point first to new first node
+   inicio = pNovo;
 }
 
-void name_search (no *inicio)
+void removeNode (no **inicio) {
 
+    int id;
+
+    printf("Digite o ID do animal o qual deseja excluir o registro: ");
+    scanf("%d", &id);
+
+    no *pPaux = NULL, *pProx = NULL;
+    pPaux = *inicio;
+    pProx = pPaux->prox;
+    for (; pPaux != NULL; pPaux=pPaux->prox) {
+        pProx = pPaux->prox;
+        if (pProx->id == id) {
+            pPaux->prox = pProx->prox;
+            free(pProx);
+            break;
+        }            
+    }
+
+    printf("Registro excluído!");
+}
+
+void name_search (int maximo)
 {
     char search[20];
+    int cont = 1;
     printf("Nome a ser buscado: ");
+    fflush(stdin);
     gets(search);
+    no *pAux = inicio;
 
-    while(inicio!=NULL)
+    while(pAux!=NULL)
     {
-       if(strcmp(inicio->name,search)==0)
+       if(strcmp(pAux->name,search)==0)
        {
-           printf("%s \n", inicio->name);
-           printf("%s \n", inicio->type);
-           printf("%s \n", inicio->species);
-           printf("%c \n", inicio->sex);
-           printf("%d \n", inicio->age);
-           printf("%s \n", inicio->obs);
+           printf("\n\nNome: %s \n", pAux->name);
+           printf("Espécie: %s \n", pAux->type);
+           printf("Raça: %s \n", pAux->species);
+           printf("Sexo (M ou F): %c \n", pAux->sex);
+           printf("Idade: %d \n", pAux->age);
+           printf("Observações: %s \n\n\n", pAux->obs);
+           break;
        }
-       else
+       else if (cont == maximo)
        {
            printf(" \n Registro não encontrado! \n\n");
        }
-       inicio=inicio->prox;
+       pAux=pAux->prox;
+       cont++;
     }
 }
 
 
 
 void type_search ( no *inicio)
-
-
 {
     char search[20];
     printf("Grupo a ser procurado: ");
