@@ -18,7 +18,7 @@ struct PETS
 } *inicio = NULL, *aux = NULL;
 
 int insert (int id, no *head);
-void removeNode (no **inicio);
+void removeNode (no *head);
 void name_search (no *head); // Busca por nome
 void type_search (no *head); // Busca por raça
 void TS_search (no *head); // Busca por raça e especie
@@ -50,7 +50,7 @@ int main ()
                 break;
 
             case 2:
-                removeNode(&head);
+                removeNode(head);
                 count--;
                 break;
 
@@ -120,26 +120,48 @@ int insert (int id, no *head) {
    (head->id)++;
 }
 
-void removeNode (no **inicio) {
+void removeNode (no *head) {
 
-    int id;
+    if (head->prox == NULL) {
+        printf("Lista vazia!\n\n");
+        system("pause");
+        return;
+    }
+    
+
+    int id, cont = 0, maximo = head->id;
+    printf("maximo: %d", maximo);
+    (head->id)--;
+    printf("maximo atualizado: %d", head->id);
+    short int achou = 0;
 
     printf("Digite o ID do animal o qual deseja excluir o registro: ");
+    fflush(stdin);
     scanf("%d", &id);
 
-    no *pPaux = NULL, *pProx = NULL;
-    pPaux = *inicio;
-    pProx = pPaux->prox;
-    for (; pPaux != NULL; pPaux=pPaux->prox) {
-        pProx = pPaux->prox;
-        if (pProx->id == id) {
-            pPaux->prox = pProx->prox;
-            free(pProx);
-            break;
-        }            
-    }
+    head = head->prox;
+    printf("head->id: %d", head->id);
+    printf("id: %d", id);
+    no *pAux = NULL;
 
-    printf("Registro excluído!");
+    while(head != NULL) {
+        pAux = head->prox;
+        printf("entrou no while");
+        if (head->prox->id == id) {
+            printf("achou");
+            achou = 1;
+            free(head->prox);
+            head->prox = pAux->prox;
+            printf("Registro excluído!\n\n");
+            system("pause");
+            break;
+        } else if (cont == maximo && achou != 1) {
+            printf("Registro não encontrado!\n\n");
+            system("pause");
+        }
+        cont++;
+        head = pAux;
+    }
 }
 
 void name_search (no *head)
