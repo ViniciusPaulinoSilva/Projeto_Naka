@@ -345,16 +345,20 @@ void T_counti(no *head)
     system("pause");
 }
 
-void list (no *inicio)
+void list (no *head)
 {
-    while(inicio->prox!=NULL)
+    head = head->prox;
+
+    while(head!=NULL)
     {
-        printf("%s \n", inicio->name);
-        printf("%s \n", inicio->type);
-        printf("%s \n", inicio->species);
-        printf("%c \n", inicio->sex);
-        printf("%d \n", inicio->age);
-        printf("%s \n", inicio->obs);
+        printf("ID: %d\n", head->id);
+        printf("%s \n", head->name);
+        printf("%s \n", head->type);
+        printf("%s \n", head->species);
+        printf("%c \n", head->sex);
+        printf("%d \n", head->age);
+        printf("%s \n", head->obs);
+        head = head->prox;
     }
     system("pause");
 }
