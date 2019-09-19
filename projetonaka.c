@@ -29,6 +29,7 @@ void counti (no *head, int count);// Contagem de animais nos registros
 void T_counti (no *head); //Contagem por Especie
 void list(no *head);// Listar os registros
 void statusList (no *head); //Listar os animais já adotados
+void TStatusList (no *head); //Listar animais de uma espécie já adotados
 
 
 
@@ -42,7 +43,7 @@ int main ()
     while(choice!=12)
     {
         system("cls");
-        printf("Escolha o que deseja fazer:\n\n 1- Adicionar novo registro \n 2- Remover Registro \n 3- Alterar Registro \n 4- Busca por Nome \n 5- Busca por Espécie \n 6- Busca por Espécie e Raça \n 7- Busca por Espécie, Raça e Sexo \n 8- Quantidade de Registros \n 9- Quantidade Específica por Espécie \n 10- Listagem de Cadastros \n 11 - Listar Animais já Adodatos \n 12- Sair \n");
+        printf("Escolha o que deseja fazer:\n\n 1- Adicionar novo registro \n 2- Remover Registro \n 3- Alterar Registro \n 4- Busca por Nome \n 5- Busca por Espécie \n 6- Busca por Espécie e Raça \n 7- Busca por Espécie, Raça e Sexo \n 8- Quantidade de Registros \n 9- Quantidade Específica por Espécie \n 10- Listagem de Cadastros \n 11 - Listar Animais já Adodatos \n 12 - Buscar por espécie de animais já adotados \n 13 - Sair \n");
         printf("\n\nDigite a opção: ");
         scanf("%d", &choice);
         printf("\n\n");
@@ -94,6 +95,8 @@ int main ()
                 statusList(head);
                 break;
 
+            case 12:
+            TStatusList(head);
             default:
                 break;
         }
@@ -511,3 +514,42 @@ void statusList (no *head)
     }
     system("pause");
 }
+
+void TStatusList (no *head)
+{
+    if (head->prox == NULL) {
+        printf("\nNenhum animal cadastrado!");
+        return;
+    }
+
+    char search[20];
+    int maximo = head->id;
+    int cont = 1;
+    short int achou = 0;
+    fflush(stdin);
+    printf("Espécie dos Pets que deseja procurar: ");
+    gets(search);
+
+    head=head->prox;
+
+    while (head != NULL) {
+        if (strcmp((head->type, search) == 0) && (head->status=="Adotado"))
+        {
+           printf("Nome: %s \n", head->name);
+           printf("Espécie: %s \n", head->type);
+           printf("Raça: %s \n", head->species);
+           printf("Sexo: %c \n", head->sex);
+           printf("Idade: %d \n", head->age);
+           printf("Obs: %s \n", head->obs);
+           printf("Status %s \n", head->status);
+           achou = 1;
+        }
+        else if (cont == maximo && achou != 1) {
+            printf("Sem animais dessa espécie adotados! \n\n");
+        }
+        head=head->prox;
+        cont++;
+    }
+    system("pause");
+}
+
