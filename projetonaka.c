@@ -97,6 +97,7 @@ int main ()
 
             case 12:
             TStatusList(head);
+
             default:
                 break;
         }
