@@ -142,25 +142,17 @@ void    removeNode (no *head) {
     }
 
     int id, cont = 0, maximo = head->id;
-    printf("maximo: %d \n", maximo);
     (head->id)--;
-    printf("maximo atualizado: %d \n", head->id);
     short int achou = 0;
 
     printf("Digite o ID do animal o qual deseja excluir o registro: ");
     fflush(stdin);
     scanf("%d", &id);
-
-
-    printf("head->id: %d \n", head->id);
-    printf("id: %d \n", id);
     no *pAux = NULL;
 
     while(head != NULL) {
         pAux = head->prox;
-        printf("entrou no while \n");
         if (head->prox->id == id) {
-            printf("achou \n ");
             achou = 1;
             free(head->prox);
             head->prox = pAux->prox;
@@ -172,7 +164,6 @@ void    removeNode (no *head) {
             system("pause");
         }
         cont++;
-       // head = pAux;
        return;
     }
 }
@@ -187,13 +178,13 @@ void alterNode (no *head)
     scanf("%d", &id);
 
     while(head !=NULL){
-        pAux=head->prox;
-        if(head->id==id){
+        pAux = head->prox;
+        if(head->id == id){
             fflush(stdin);
             while(choice!=9)
             {
                 system("cls");
-                printf("Qual informação deseja alterar?\n 1 - Nome \n 2 - Espécie \n 3 - Raça \n 4 - Sexo \n 5 - Idade \n 6 - Observações \n 7 - Status \n 8 - Refazer Cadastro \n 9 - Sair \n");
+                printf("\n\nQual informação deseja alterar?\n\n 1 - Nome \n 2 - Espécie \n 3 - Raça \n 4 - Sexo \n 5 - Idade \n 6 - Observações \n 7 - Status \n 8 - Refazer Cadastro \n 9 - Sair \n");
                 scanf("%d", &choice);
                 printf("\n\n");
                 switch(choice)
@@ -261,7 +252,7 @@ void alterNode (no *head)
 
                     default:
                         return;
-            }
+                }
             }
         }
     }
@@ -272,7 +263,7 @@ void name_search (no *head)
     char search[20];
     int cont = 1;
     int maximo = head->id;
-    printf("Nome a ser buscado: ");
+    printf("Nome do Pet que deseja procurar: ");
     fflush(stdin);
     gets(search);
     no *pAux = head->prox;
@@ -305,7 +296,7 @@ void name_search (no *head)
 void type_search (no *head)
 {
     if (head->prox == NULL) {
-        printf("Nenhum animal cadastrado!");
+        printf("\nNenhum animal cadastrado!");
         return;
     }
 
@@ -315,7 +306,7 @@ void type_search (no *head)
     short int achou = 0;
     printf("maximo: %d \n\n", maximo);
     fflush(stdin);
-    printf("Espécie a ser procurado: ");
+    printf("Espécie dos Pets que deseja procurar: ");
     gets(search);
 
     head=head->prox;
@@ -388,7 +379,7 @@ void TS_search(no *head)
 void TSS_search( no *head)
 {
     if (head->prox == NULL) {
-        printf("Nenhum animal cadastrado!");
+        printf("Nenhum animal cadastrado!\n");
         return;
     }
 
@@ -425,7 +416,7 @@ void TSS_search( no *head)
            achou = 1;
         }
         else if (cont == maximo && achou != 1) {
-            printf("Sem animais desse tipo disponíveis! \n\n");
+            printf("\nSem animais desse tipo disponíveis! \n\n");
         }
         head=head->prox;
         cont++;
@@ -437,11 +428,11 @@ void TSS_search( no *head)
 void counti (no *head, int count)
 {
     if (count == 0) {
-        printf("Nenhum animal cadastrado!\n\n");
+        printf("\nNenhum animal cadastrado!\n\n");
         system("pause");
         return;
     }
-    printf("Numero de animais nos registros: %d \n\n", count);
+    printf("\nNumero de animais nos registros: %d \n\n", count);
     system("pause");
 }
 
@@ -450,7 +441,7 @@ void T_counti(no *head)
 {
     int count=0;
     char search[20];
-    printf("Especie a contar: ");
+    printf("\nEspecie que deseja contar: ");
     fflush(stdin);
     gets(search);
 
@@ -465,12 +456,12 @@ void T_counti(no *head)
        head = head->prox;
     }
     if (count == 0) {
-        printf("Não há animais dessa espécie cadastrados!\n");
+        printf("\nNão há animais dessa espécie cadastrados!\n");
         system("pause");
         return;
     }
 
-    printf("Numero de animais dessa espécie: %d \n\n", count);
+    printf("\nNumero de animais dessa espécie: %d \n\n", count);
     system("pause");
 }
 
@@ -500,8 +491,7 @@ void statusList (no *head)
     int maximo = head->id;
     no *pAux = head->prox;
 
-    while(pAux!=NULL)
-    {
+    while(pAux!=NULL){
        if(strcmp(pAux->status, "Adotado")==0)
        {
            printf("\nNome: %s \n", pAux->name);
