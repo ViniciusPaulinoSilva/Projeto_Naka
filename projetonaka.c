@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 typedef struct PETS no;
 
@@ -19,7 +20,7 @@ struct PETS
 };
 
 void insert (int id, no *head); // insere nó
-void removeNode (int maximo, no *head); // remove nó
+void removeNode (int *maximo, no **head); // remove nó
 void alterNode (no *head); //altera nó
 void name_search (no *head); // Busca por nome
 void type_search (no *head); // Busca por raça
@@ -35,6 +36,7 @@ void TStatusList (no *head); //Listar animais de uma espécie já adotados
 
 int main ()
 {
+    setlocale(LC_ALL, "portuguese");
     no *head = (no*)malloc(sizeof(no));
     head->id = 0;
     head->prox = NULL;
@@ -55,8 +57,7 @@ int main ()
                 break;
 
             case 2:
-                removeNode(count, head);
-                count--;
+                removeNode(&count, &head);
                 break;
 
             case 3:
@@ -139,38 +140,38 @@ void insert (int id, no *head) {
    (head->id)++;
 }
 
-void removeNode (int maximo, no *head) {
-
-    if (head->prox == NULL) {
-        printf("Lista vazia!\n\n");
+void removeNode(int *maximo, no **head) {
+    if ((*head)->prox == NULL) { //LISTA VAZIA
+        printf("Não há animais cadastrados!\n\n");
         system("pause");
         return;
     }
 
-    int id, cont = 0;
-    short int achou = 0;
-
-    printf("Digite o ID do animal o qual deseja excluir o registro: ");
+    int id;
+    printf("Digite o ID do animal que deseja excluir do registro: ");
     fflush(stdin);
     scanf("%d", &id);
+
     no *pAux = NULL;
 
-    while(head != NULL) {
-        pAux = head->prox;
-        if (head->prox->id == id) {
-            achou = 1;
-            head->prox = pAux->prox;
-            free(pAux);
+    if ((*head)->prox->id == id) {
+        pAux = (*head)->prox;
+        (*head)->prox = (*head)->prox->prox;
+        free(pAux);
+        printf("Registro excluído!\n\n");
+        system("pause");
+        return;
+    }
+
+    for (pAux=(*head)->prox; pAux!=NULL; pAux=pAux->prox) {
+        if (pAux->prox->id == id) {
+            no *pAux2 = pAux->prox;
+            pAux->prox = pAux->prox->prox;
+            free(pAux2);
             printf("Registro excluído!\n\n");
             system("pause");
-            break;
-        } else if (maximo == cont && achou != 1) {
-            printf("Registro não encontrado!\n\n");
-            system("pause");
+            return;
         }
-        head=head->prox;
-        cont++;
-        return;
     }
 }
 
