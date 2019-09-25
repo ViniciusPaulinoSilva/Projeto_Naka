@@ -148,7 +148,7 @@ void removeNode(int *maximo, no **head) {
     }
 
     int id;
-    printf("Digite o ID do animal que deseja excluir do registro: ");
+    printf("Digite o ID do animal que deseja excluir dos registros: ");
     fflush(stdin);
     scanf("%d", &id);
 
@@ -158,17 +158,32 @@ void removeNode(int *maximo, no **head) {
         pAux = (*head)->prox;
         (*head)->prox = (*head)->prox->prox;
         free(pAux);
+        *maximo = *maximo-1;
         printf("Registro excluído!\n\n");
         system("pause");
         return;
     }
 
-    for (pAux=(*head)->prox; pAux!=NULL; pAux=pAux->prox) {
+    int cont = 0;
+    printf("maximo: %d", *maximo); 
+
+    for (pAux=(*head)->prox; pAux->prox!=NULL; pAux=pAux->prox) {
         if (pAux->prox->id == id) {
             no *pAux2 = pAux->prox;
             pAux->prox = pAux->prox->prox;
             free(pAux2);
+            *maximo = *maximo-1;
             printf("Registro excluído!\n\n");
+            system("pause");
+            return;
+        } else {
+            printf("cont: %d", cont);
+            cont++;
+            printf("cont++: %d", cont);
+        }
+
+        if (cont == *maximo) {
+            printf("Registro não encontrado!\n\n");
             system("pause");
             return;
         }
