@@ -1,8 +1,8 @@
-/****************************************************************************
-* Nomes: Gabriel Freitas Yamamoto e Vinicius Paulino        RAs: 19241611 e *
-* Opcionais funcionando: 2 e 4                                              *
-* Valor do Projeto: 9 pontos                                                *
-****************************************************************************/
+/*********************************************************************************************
+* Nomes: Gabriel Freitas Yamamoto e Vinicius Paulino da Silva       RAs: 19241611 e 18713529 *
+* Opcionais funcionando: 2 e 4                                                               *
+* Valor do Projeto: 9 pontos                                                                 *
+*********************************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
