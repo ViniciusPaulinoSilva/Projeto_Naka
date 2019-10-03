@@ -210,6 +210,11 @@ void removeNode(int *maximo, no **head) {
 }
 
 void alterNode (no *head) {
+         if (head->prox == NULL) {
+        printf("Não há animais cadastrados!\n\n");
+        system("pause");
+        return;
+        }   
     no *pAux = NULL;
     int id=0;
     int choice=0;
