@@ -1,3 +1,4 @@
+
 /*********************************************************************************************
 * Nomes: Gabriel Freitas Yamamoto e Vinicius Paulino da Silva       RAs: 19241611 e 18713529 *
 * Opcionais funcionando: 2 e 4                                                               *
@@ -9,6 +10,7 @@
 #include <string.h>
 #include <locale.h>
 #include <ctype.h>
+#include "tela.h"
 
 typedef struct PETS no;
 
@@ -42,6 +44,8 @@ void TStatusList (no *head); //Listar animais de uma espécie já adotados
 
 int main ()
 {
+    textbackground(VERDE);
+    textcolor(ROSA);
     setlocale(LC_ALL, "portuguese");
     no *head = (no*)malloc(sizeof(no));
     head->id = 0;
@@ -206,13 +210,19 @@ void removeNode(int *maximo, no **head) {
 }
 
 void alterNode (no *head) {
+         if (head->prox == NULL) {
+        printf("Não há animais cadastrados!\n\n");
+        system("pause");
+        return;
+        }   
     no *pAux = NULL;
     int id=0;
     int choice=0;
     fflush(stdin);
     printf("Digite o ID do registro que deseja alterar: \n");
     scanf("%d", &id);
-
+    textbackground(CIANO_ESCURO);
+    textcolor(AMARELO);
     while(head !=NULL){
         pAux = head->prox;
         if(head->id == id){
@@ -288,11 +298,20 @@ void alterNode (no *head) {
                         break;
 
                     default:
+                        textbackground(VERDE);
+                        textcolor(ROSA);
                         return;
                 }
             }
         }
+        else{
+            printf("\nRegistro não encontrado! \n");
+            system("pause");
+            textbackground(VERDE);
+            textcolor(ROSA);
+            return;
     }
+}
 }
 
 void name_search (no *head)
@@ -315,6 +334,7 @@ void name_search (no *head)
     {
        if(strcmp(pAux->name, search)==0)
        {
+           textcolor(PRETO);
            printf("\n\nNome: %s \n", pAux->name);
            printf("Espécie: %s \n", pAux->type);
            printf("Raça: %s \n", pAux->species);
@@ -332,7 +352,9 @@ void name_search (no *head)
        cont++;
     }
     system("pause");
+    textcolor(ROSA);
 }
+
 
 
 
@@ -356,6 +378,7 @@ void type_search (no *head)
 
     while (head != NULL) {
         if (strcmp(head->type, search) == 0) {
+            textcolor(PRETO);
            printf("\n\nNome: %s \n", head->name);
            printf("Espécie: %s \n", head->type);
            printf("Raça: %s \n", head->species);
@@ -372,6 +395,7 @@ void type_search (no *head)
         cont++;
     }
     system("pause");
+    textcolor(ROSA);
 }
 
 
@@ -402,6 +426,7 @@ void TS_search(no *head)
     {
         if((strcmp(head->type, searchSpecies) == 0) && (strcmp(head->species, searchType) == 0))
         {
+            textcolor(PRETO);
            printf("\n\nNome: %s \n", head->name);
            printf("Espécie: %s \n", head->type);
            printf("Raça: %s \n", head->species);
@@ -418,6 +443,7 @@ void TS_search(no *head)
         cont++;
     }
     system("pause");
+    textcolor(ROSA);
 }
 
 void TSS_search(no *head)
@@ -451,6 +477,7 @@ void TSS_search(no *head)
     {
         if((strcmp(head->type, searchSpecies) == 0) && (strcmp(head->species, searchType) == 0) && (tolower(head->sex) == tolower(searchSex)))
         {
+            textcolor(PRETO);
            printf("\n\nNome: %s \n", head->name);
            printf("Espécie: %s \n", head->type);
            printf("Raça: %s \n", head->species);
@@ -467,6 +494,7 @@ void TSS_search(no *head)
         cont++;
     }
     system("pause");
+    textcolor(ROSA);
 }
 
 
@@ -477,8 +505,10 @@ void counti (no *head, int count)
         system("pause");
         return;
     }
+    textcolor(PRETO);
     printf("\nNumero de animais nos registros: %d \n\n", count);
     system("pause");
+    textcolor(ROSA);
 }
 
 
@@ -501,13 +531,16 @@ void T_counti(no *head)
        head = head->prox;
     }
     if (count == 0) {
+            textcolor(PRETO);
         printf("\n\nNão há animais dessa espécie cadastrados!\n");
         system("pause");
+        textcolor(ROSA);
         return;
     }
-
+    textcolor(PRETO);
     printf("\n\nNumero de animais dessa espécie: %d \n\n", count);
     system("pause");
+    textcolor(ROSA);
 }
 
 void list (no *head)
@@ -517,6 +550,7 @@ void list (no *head)
 
     while(head!=NULL)
     {
+        textcolor(PRETO);
         printf("\nID: %d\n", head->id);
         printf("Nome: %s \n", head->name);
         printf("Especie: %s \n", head->type);
@@ -528,6 +562,7 @@ void list (no *head)
         head = head->prox;
     }
     system("pause");
+    textcolor(ROSA);
 }
 
 void statusList (no *head)
@@ -539,6 +574,7 @@ void statusList (no *head)
     while(pAux!=NULL){
        if(strcmp(pAux->status, "Adotado")==0)
        {
+           textcolor(PRETO);
            printf("\n\nNome: %s \n", pAux->name);
            printf("Espécie: %s \n", pAux->type);
            printf("Raça: %s \n", pAux->species);
@@ -555,6 +591,7 @@ void statusList (no *head)
        cont++;
     }
     system("pause");
+    textcolor(ROSA);
 }
 
 void TStatusList (no *head)
@@ -577,6 +614,7 @@ void TStatusList (no *head)
     while (head != NULL) {
         if (strcmp((head->type), search) == 0 && (strcmp((head->status), "Adotado") == 0))
         {
+            textcolor(PRETO);
            printf("\n\nNome: %s \n", head->name);
            printf("Espécie: %s \n", head->type);
            printf("Raça: %s \n", head->species);
@@ -593,5 +631,5 @@ void TStatusList (no *head)
         cont++;
     }
     system("pause");
+    textcolor(ROSA);
 }
-
