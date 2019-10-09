@@ -15,8 +15,6 @@
 #include <ctype.h>
 #include "tela.h"
 
-#define CLOCKS_PER_SEC 2500000000
-
 typedef struct PETS no;
 
 struct PETS
@@ -29,10 +27,12 @@ struct PETS
     int age;
     char obs[30];
     char status[10];
+    time_t criado;
+    time_t alteracao;
     struct PETS *prox;
 };
 
-void insert (int id, no *head); // insere nó
+void insert (int id, no *head, time_t inicio); // insere nó
 void removeNode (int *maximo, no **head); // remove nó
 void alterNode (int maximo, no *head); //altera nó
 void name_search (no *head); // Busca por nome
@@ -59,7 +59,7 @@ int main ()
     head->id = 0;
     head->prox = NULL;
     int choice=0;
-    int count=0; // contador de animais, colocar pra reduzir contador quanto fizer a função 2
+    int count=0; // contador de animais
     while(choice!=13)
     {
         system("cls");
@@ -71,7 +71,7 @@ int main ()
         switch(choice)
         {
             case 1:
-                insert((head->id) + 1, head);
+                insert((head->id) + 1, head, inicio);
                 count++;
                 break;
 
@@ -124,13 +124,15 @@ int main ()
     }
 }
 
-void insert (int id, no *head) {
+void insert (int id, no *head, time_t inicio) {
     //create a link
     no *pNovo = (no*) malloc(sizeof(no));
     if (pNovo == NULL) {
         printf("Heap overflow!");
         return;
     }
+
+    time_t atual;
 
     pNovo->id = id;
     fflush(stdin);
@@ -156,6 +158,9 @@ void insert (int id, no *head) {
     fflush(stdin);
     gets(pNovo->status);
     printf("\n\n");
+    time(&atual);
+    pNovo->criado = atual;
+    pNovo->alteracao = pNovo->criado;
     printf("Animal cadastrado!\n\n");
     system("pause");
 
@@ -240,47 +245,62 @@ void alterNode (int maximo, no *head) {
                 printf("\nDigite a opção: ");
                 scanf("%d", &choice);
                 printf("\n\n");
+                time_t atual;
                 switch(choice) {
                     case 1:
                         fflush(stdin);
                         printf("Novo Nome: ");
                         gets(pAux->name);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     case 2:
                         fflush(stdin);
                         printf("Nova Espécie: ");
                         gets(pAux->type);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     case 3:
                         fflush(stdin);
                         printf("Nova Raça: ");
                         gets(pAux->species);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     case 4:
                         fflush(stdin);
                         printf("Novo Sexo: ");
                         scanf("%c", &pAux->sex);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     case 5:
                         fflush(stdin);
                         printf("Nova Idade: ");
                         scanf("%d", &pAux->age);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     case 6:
                         fflush(stdin);
                         printf("Novas Observações: ");
                         gets(pAux->obs);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     case 7:
                         fflush(stdin);
                         printf("Atualizar Status: ");
                         gets(pAux->status);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     case 8:
@@ -300,6 +320,8 @@ void alterNode (int maximo, no *head) {
                         gets(pAux->obs);
                         printf("Status: ");
                         gets(pAux->status);
+                        time(&atual);
+                        pAux->alteracao = atual;
                         break;
 
                     default:
@@ -317,8 +339,7 @@ void alterNode (int maximo, no *head) {
     system("pause");
 }
 
-void name_search (no *head)
-{
+void name_search (no *head) {
     if (head->prox == NULL) {
         printf("Registro vazio!\n\n");
         system("pause");
@@ -337,14 +358,23 @@ void name_search (no *head)
     {
        if(strcmp(pAux->name, search)==0)
        {
-           textcolor(VERDE);
-           printf("\n\nNome: %s \n", pAux->name);
-           printf("Espécie: %s \n", pAux->type);
-           printf("Raça: %s \n", pAux->species);
-           printf("Sexo (M ou F): %c \n", pAux->sex);
-           printf("Idade: %d \n", pAux->age);
-           printf("Observações: %s \n", pAux->obs);
-           printf("Status: %s \n\n", pAux->status);
+            textcolor(VERDE);
+            printf("\n\nNome: %s \n", pAux->name);
+            printf("Espécie: %s \n", pAux->type);
+            printf("Raça: %s \n", pAux->species);
+            printf("Sexo (M ou F): %c \n", pAux->sex);
+            printf("Idade: %d \n", pAux->age);
+            printf("Observações: %s \n", pAux->obs);
+            printf("Status: %s \n", pAux->status);
+            struct tm* criadoInfo = localtime(&pAux->criado);
+            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+                criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
+            if (difftime(pAux->alteracao, pAux->criado) != 0) {
+                struct tm* alterInfo = localtime(&pAux->alteracao);
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n", 
+                    alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
+            }
+            printf("\n");
            break;
        }
        else if (cont == maximo)
@@ -357,9 +387,6 @@ void name_search (no *head)
     system("pause");
     textcolor(CINZA);
 }
-
-
-
 
 void type_search (no *head)
 {
@@ -382,14 +409,23 @@ void type_search (no *head)
     while (head != NULL) {
         if (strcmp(head->type, search) == 0) {
             textcolor(VERDE);
-           printf("\n\nNome: %s \n", head->name);
-           printf("Espécie: %s \n", head->type);
-           printf("Raça: %s \n", head->species);
-           printf("Sexo: %c \n", head->sex);
-           printf("Idade: %d \n", head->age);
-           printf("Observação: %s \n", head->obs);
-           printf("Status: %s \n\n", head->status);
-           achou = 1;
+            struct tm* timeinfo = localtime(&head->criado);
+            printf("\n\nNome: %s \n", head->name);
+            printf("Espécie: %s \n", head->type);
+            printf("Raça: %s \n", head->species);
+            printf("Sexo: %c \n", head->sex);
+            printf("Idade: %d \n", head->age);
+            printf("Observação: %s \n", head->obs);
+            printf("Status: %s \n", head->status);
+            struct tm* criadoInfo = localtime(&head->criado);
+            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+                criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
+            if (difftime(head->alteracao, head->criado) != 0) {
+                struct tm* alterInfo = localtime(&head->alteracao);
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+                    alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
+            }
+            achou = 1;
         }
         else if (cont == maximo && achou != 1) {
             printf("Sem animais dessa espécie disponíveis! \n\n");
@@ -437,6 +473,14 @@ void TS_search(no *head)
            printf("Idade: %d \n", head->age);
            printf("Obs: %s \n", head->obs);
            printf("Status: %s \n\n", head->status);
+            struct tm* criadoInfo = localtime(&head->criado);
+            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+                criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
+            if (difftime(head->alteracao, head->criado) != 0) {
+                struct tm* alterInfo = localtime(&head->alteracao);
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+                    alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
+            }
            achou = 1;
         }
         else if (cont == maximo && achou != 1) {
@@ -488,6 +532,14 @@ void TSS_search(no *head)
            printf("Idade: %d \n", head->age);
            printf("Obs: %s \n", head->obs);
            printf("Status: %s \n", head->status);
+            struct tm* criadoInfo = localtime(&head->criado);
+            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+                criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
+            if (difftime(head->alteracao, head->criado) != 0) {
+                struct tm* alterInfo = localtime(&head->alteracao);
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+                    alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
+            }
            achou = 1;
         }
         else if (cont == maximo && achou != 1) {
@@ -561,7 +613,15 @@ void list (no *head)
         printf("Sexo: %c \n", head->sex);
         printf("Idade: %d \n", head->age);
         printf("Obs: %s \n", head->obs);
-        printf("Status: %s\n\n", head->status);
+        printf("Status: %s\n", head->status);
+        struct tm* criadoInfo = localtime(&head->criado);
+        printf("Criado dia: %d/%d/%d as %d:%d\n", 
+            criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
+        if (difftime(head->alteracao, head->criado) != 0) {
+            struct tm* alterInfo = localtime(&head->alteracao);
+            printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+                alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
+        }
         head = head->prox;
     }
     system("pause");
