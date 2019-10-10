@@ -1,8 +1,9 @@
 
+
 /*********************************************************************************************
 * Nomes: Gabriel Freitas Yamamoto e Vinicius Paulino da Silva       RAs: 19241611 e 18713529 *
-* Opcionais funcionando: 2 e 4                                                               *
-* Valor do Projeto: 9 pontos                                                                 *
+* Opcionais funcionando: 1 e 2 e 4                                                           *
+* Valor do Projeto: 10 pontos                                                                *
 *********************************************************************************************/
 
 #include <stdio.h>
@@ -48,7 +49,7 @@ void TStatusList (no *head); //Listar animais de uma espécie já adotados
 int main ()
 {
 	time_t inicio, atual;
-	clock_t milisseg;  
+	clock_t milisseg;
 	struct tm * timeinfo;
     time(&inicio);        // Pega o horario inicial
 
@@ -224,10 +225,10 @@ void removeNode(int *maximo, no **head) {
 
 void alterNode (int maximo, no *head) {
     if (head->prox == NULL) {
-        printf("Não há animais cadastrados!\n\n");
+        printf("\nNão há animais cadastrados!\n\n");
         system("pause");
         return;
-    }   
+    }
     no *pAux = NULL;
     int id=0, cont = 1;
     int choice=0;
@@ -253,6 +254,8 @@ void alterNode (int maximo, no *head) {
                         gets(pAux->name);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     case 2:
@@ -261,6 +264,8 @@ void alterNode (int maximo, no *head) {
                         gets(pAux->type);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     case 3:
@@ -269,6 +274,8 @@ void alterNode (int maximo, no *head) {
                         gets(pAux->species);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     case 4:
@@ -277,6 +284,8 @@ void alterNode (int maximo, no *head) {
                         scanf("%c", &pAux->sex);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     case 5:
@@ -285,6 +294,8 @@ void alterNode (int maximo, no *head) {
                         scanf("%d", &pAux->age);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     case 6:
@@ -293,6 +304,8 @@ void alterNode (int maximo, no *head) {
                         gets(pAux->obs);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     case 7:
@@ -301,6 +314,8 @@ void alterNode (int maximo, no *head) {
                         gets(pAux->status);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     case 8:
@@ -322,6 +337,8 @@ void alterNode (int maximo, no *head) {
                         gets(pAux->status);
                         time(&atual);
                         pAux->alteracao = atual;
+                        printf("\nRegistro alterado! \n\n");
+                        system("pause");
                         break;
 
                     default:
@@ -341,48 +358,48 @@ void alterNode (int maximo, no *head) {
 
 void name_search (no *head) {
     if (head->prox == NULL) {
-        printf("Registro vazio!\n\n");
+        printf("\nNenhum animal cadastrado!\n\n");
         system("pause");
         return;
     }
 
     char search[20];
-    int cont = 1;
     int maximo = head->id;
-    printf("Nome do Pet que deseja procurar: ");
+    int cont = 1;
+    short int achou = 0;
     fflush(stdin);
+    printf("\nNome dos Pets que deseja procurar: ");
     gets(search);
-    no *pAux = head->prox;
 
-    while(pAux!=NULL)
-    {
-       if(strcmp(pAux->name, search)==0)
-       {
+    head=head->prox;
+
+    while (head != NULL) {
+        if (strcmp(head->type, search) == 0) {
             textcolor(VERDE);
-            printf("\n\nNome: %s \n", pAux->name);
-            printf("Espécie: %s \n", pAux->type);
-            printf("Raça: %s \n", pAux->species);
-            printf("Sexo (M ou F): %c \n", pAux->sex);
-            printf("Idade: %d \n", pAux->age);
-            printf("Observações: %s \n", pAux->obs);
-            printf("Status: %s \n", pAux->status);
-            struct tm* criadoInfo = localtime(&pAux->criado);
-            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+            struct tm* timeinfo = localtime(&head->criado);
+            printf("\n\nNome: %s \n", head->name);
+            printf("Espécie: %s \n", head->type);
+            printf("Raça: %s \n", head->species);
+            printf("Sexo: %c \n", head->sex);
+            printf("Idade: %d \n", head->age);
+            printf("Observação: %s \n", head->obs);
+            printf("Status: %s \n", head->status);
+            struct tm* criadoInfo = localtime(&head->criado);
+            printf("Criado dia: %d/%d/%d as %d:%d\n",
                 criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
-            if (difftime(pAux->alteracao, pAux->criado) != 0) {
-                struct tm* alterInfo = localtime(&pAux->alteracao);
-                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n", 
+            if (difftime(head->alteracao, head->criado) != 0) {
+                struct tm* alterInfo = localtime(&head->alteracao);
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n",
                     alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
             }
             printf("\n");
-           break;
-       }
-       else if (cont == maximo)
-       {
-           printf(" \n Registro não encontrado! \n\n");
-       }
-       pAux=pAux->prox;
-       cont++;
+            achou = 1;
+        }
+        else if (cont == maximo && achou != 1) {
+            printf("\nSem animais com esse nome disponíveis! \n\n");
+        }
+        head=head->prox;
+        cont++;
     }
     system("pause");
     textcolor(CINZA);
@@ -418,17 +435,18 @@ void type_search (no *head)
             printf("Observação: %s \n", head->obs);
             printf("Status: %s \n", head->status);
             struct tm* criadoInfo = localtime(&head->criado);
-            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+            printf("Criado dia: %d/%d/%d as %d:%d\n",
                 criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
             if (difftime(head->alteracao, head->criado) != 0) {
                 struct tm* alterInfo = localtime(&head->alteracao);
-                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n",
                     alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
             }
+            printf("\n");
             achou = 1;
         }
         else if (cont == maximo && achou != 1) {
-            printf("Sem animais dessa espécie disponíveis! \n\n");
+            printf("\nSem animais dessa espécie disponíveis! \n\n");
         }
         head=head->prox;
         cont++;
@@ -474,13 +492,14 @@ void TS_search(no *head)
            printf("Obs: %s \n", head->obs);
            printf("Status: %s \n\n", head->status);
             struct tm* criadoInfo = localtime(&head->criado);
-            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+            printf("Criado dia: %d/%d/%d as %d:%d\n",
                 criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
             if (difftime(head->alteracao, head->criado) != 0) {
                 struct tm* alterInfo = localtime(&head->alteracao);
-                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n",
                     alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
             }
+            printf("\n");
            achou = 1;
         }
         else if (cont == maximo && achou != 1) {
@@ -533,13 +552,14 @@ void TSS_search(no *head)
            printf("Obs: %s \n", head->obs);
            printf("Status: %s \n", head->status);
             struct tm* criadoInfo = localtime(&head->criado);
-            printf("Criado dia: %d/%d/%d as %d:%d\n", 
+            printf("Criado dia: %d/%d/%d as %d:%d\n",
                 criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
             if (difftime(head->alteracao, head->criado) != 0) {
                 struct tm* alterInfo = localtime(&head->alteracao);
-                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n",
                     alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
             }
+            printf("\n");
            achou = 1;
         }
         else if (cont == maximo && achou != 1) {
@@ -615,49 +635,60 @@ void list (no *head)
         printf("Obs: %s \n", head->obs);
         printf("Status: %s\n", head->status);
         struct tm* criadoInfo = localtime(&head->criado);
-        printf("Criado dia: %d/%d/%d as %d:%d\n", 
+        printf("Criado dia: %d/%d/%d as %d:%d\n",
             criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
         if (difftime(head->alteracao, head->criado) != 0) {
             struct tm* alterInfo = localtime(&head->alteracao);
-            printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n", 
+            printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n",
                 alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
         }
+        printf("\n");
         head = head->prox;
     }
     system("pause");
     textcolor(CINZA);
 }
 
-void statusList (no *head)
-{
-    int cont = 1;
-    int maximo = head->id;
-    no *pAux = head->prox;
-
-    if (pAux == NULL) {
-        printf("Lista vazia!\n\n");
+void statusList (no *head){
+    if (head->prox == NULL){
+        printf("\nNenhum animal cadastrado!\n\n");
         system("pause");
         return;
     }
+    int maximo = head->id;
+    int cont = 1;
+    short int achou = 0;
+    fflush(stdin);
 
-    while(pAux!=NULL){
-       if(strcmp(pAux->status, "Adotado")==0)
-       {
-           textcolor(VERDE);
-           printf("\n\nNome: %s \n", pAux->name);
-           printf("Espécie: %s \n", pAux->type);
-           printf("Raça: %s \n", pAux->species);
-           printf("Sexo (M ou F): %c \n", pAux->sex);
-           printf("Idade: %d \n", pAux->age);
-           printf("Observações: %s \n\n\n", pAux->obs);
-           break;
-       }
-       else if (cont == maximo)
-       {
-           printf("\nNenhum animal foi adotado ainda!\n\n");
-       }
-       pAux=pAux->prox;
-       cont++;
+    head=head->prox;
+
+    while (head != NULL) {
+        if (strcmp(head->status, "Adotado") == 0) {
+            textcolor(VERDE);
+            struct tm* timeinfo = localtime(&head->criado);
+            printf("\n\nNome: %s \n", head->name);
+            printf("Espécie: %s \n", head->type);
+            printf("Raça: %s \n", head->species);
+            printf("Sexo: %c \n", head->sex);
+            printf("Idade: %d \n", head->age);
+            printf("Observação: %s \n", head->obs);
+            printf("Status: %s \n", head->status);
+            struct tm* criadoInfo = localtime(&head->criado);
+            printf("Criado dia: %d/%d/%d as %d:%d\n",
+                criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
+            if (difftime(head->alteracao, head->criado) != 0) {
+                struct tm* alterInfo = localtime(&head->alteracao);
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n",
+                    alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
+            }
+            printf("\n");
+            achou = 1;
+        }
+        else if (cont == maximo && achou != 1) {
+            printf("\nSem animais com esse nome disponíveis! \n\n");
+        }
+        head=head->prox;
+        cont++;
     }
     system("pause");
     textcolor(CINZA);
@@ -670,7 +701,6 @@ void TStatusList (no *head)
         system("pause");
         return;
     }
-
     char search[20];
     int maximo = head->id;
     int cont = 1;
@@ -682,20 +712,29 @@ void TStatusList (no *head)
     head=head->prox;
 
     while (head != NULL) {
-        if (strcmp((head->type), search) == 0 && (strcmp((head->status), "Adotado") == 0))
-        {
+        if (strcmp((head->type), search) == 0 && (strcmp((head->status), "Adotado") == 0)){
             textcolor(VERDE);
-           printf("\n\nNome: %s \n", head->name);
-           printf("Espécie: %s \n", head->type);
-           printf("Raça: %s \n", head->species);
-           printf("Sexo: %c \n", head->sex);
-           printf("Idade: %d \n", head->age);
-           printf("Obs: %s \n", head->obs);
-           printf("Status %s \n\n", head->status);
-           achou = 1;
+            struct tm* timeinfo = localtime(&head->criado);
+            printf("\n\nNome: %s \n", head->name);
+            printf("Espécie: %s \n", head->type);
+            printf("Raça: %s \n", head->species);
+            printf("Sexo: %c \n", head->sex);
+            printf("Idade: %d \n", head->age);
+            printf("Observação: %s \n", head->obs);
+            printf("Status: %s \n", head->status);
+            struct tm* criadoInfo = localtime(&head->criado);
+            printf("Criado dia: %d/%d/%d as %d:%d\n",
+                criadoInfo->tm_mday, (criadoInfo->tm_mon)+1, (criadoInfo->tm_year)+1900, criadoInfo->tm_hour, criadoInfo->tm_min);
+            if (difftime(head->alteracao, head->criado) != 0) {
+                struct tm* alterInfo = localtime(&head->alteracao);
+                printf("Última alteração feita dia: %d/%d/%d as %d:%d\n\n",
+                    alterInfo->tm_mday, (alterInfo->tm_mon)+1, (alterInfo->tm_year)+1900, alterInfo->tm_hour, alterInfo->tm_min);
+            }
+            printf("\n");
+            achou = 1;
         }
         else if (cont == maximo && achou != 1) {
-            printf("\n\nSem animais dessa espécie adotados! \n\n");
+            printf("\nSem animais com esse nome disponíveis! \n\n");
         }
         head=head->prox;
         cont++;
@@ -703,3 +742,4 @@ void TStatusList (no *head)
     system("pause");
     textcolor(CINZA);
 }
+
